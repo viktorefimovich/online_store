@@ -14,4 +14,4 @@ def contacts(request):
         return HttpResponse(
             f"{name} Телефон: {phone}, Ваше сообщение получено<br>Сообщение: {message}"
         )
-    return render(request, "catalog/contacts.html")
+    return render(request, "contacts.html")
