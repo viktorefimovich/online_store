@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 
@@ -6,4 +7,11 @@ def home(request):
 
 
 def contacts(request):
-    return render(request, 'contacts.html')
+    if request.method == "POST":
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+        return HttpResponse(
+            f"{name} Телефон: {phone}, Ваше сообщение получено<br>Сообщение: {message}"
+        )
+    return render(request, 'catalog/contacts.html')
