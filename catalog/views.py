@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, "home.html")
 
 
 def contacts(request):
@@ -14,4 +14,4 @@ def contacts(request):
         return HttpResponse(
             f"{name} Телефон: {phone}, Ваше сообщение получено<br>Сообщение: {message}"
         )
-    return render(request, 'catalog/contacts.html')
+    return render(request, "catalog/contacts.html")
