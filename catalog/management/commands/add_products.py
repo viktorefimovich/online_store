@@ -7,6 +7,9 @@ class Command(BaseCommand):
     help = "Add products to the database"
 
     def handle(self, *args, **options):
+        Product.objects.all().delete()
+        Category.objects.all().delete()
+
         category, _ = Category.objects.get_or_create(name="Смартфон")
 
         products = [
