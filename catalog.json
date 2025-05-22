@@ -1,0 +1,70 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Ягода",
+      "description": "Вкусная ягода"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Овощи",
+      "description": "Овощи прямо с грядки"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Клубника",
+      "description": "Сочная сладкая клубника",
+      "image": "",
+      "category": 1,
+      "price": 250.0,
+      "created_at": "2025-05-17",
+      "updated_at": "2025-05-17"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Черника",
+      "description": "Крупная спелая черника",
+      "image": "",
+      "category": 1,
+      "price": 300.0,
+      "created_at": "2025-05-17",
+      "updated_at": "2025-05-17"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Огурец",
+      "description": "Сочный спелый огурец",
+      "image": "",
+      "category": 2,
+      "price": 150.0,
+      "created_at": "2025-05-17",
+      "updated_at": "2025-05-17"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "Помидор",
+      "description": "Красный сладкий помидор",
+      "image": "",
+      "category": 2,
+      "price": 170.0,
+      "created_at": "2025-05-17",
+      "updated_at": "2025-05-17"
+    }
+  }
+]
