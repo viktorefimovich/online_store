@@ -10,5 +10,5 @@ app_name = CatalogConfig.name
 
 urlpatterns = [
     path("contacts/", views.contacts, name="contacts"),
-    path("", products_lict)
+    path("", products_lict, name="products_lict")
 ]
