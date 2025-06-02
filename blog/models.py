@@ -1,22 +1,17 @@
 from django.db import models
 
 
-class BlogModel(models.Model):
-    BOOLEAN_CHOICES = [
-        (True, 'Да'),
-        (False, 'Нет'),
-    ]
-
-    title = models.CharField(max_length=50, verbose_name='Заголовок')
-    inner = models.TextField(verbose_name="Содержание")
-    preview = models.ImageField(verbose_name="Превью", upload_to='preview/', blank=True)
-    created_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(verbose_name="Признак публикации", choices=BOOLEAN_CHOICES)
-    views = models.PositiveIntegerField(verbose_name="Количество просмотров", default=0, auto_created=True)
-
-    def __str__(self):
-        return self.title
+class Article(models.Model):
+    title = models.CharField(max_length=150, verbose_name="Заголовок")
+    content = models.TextField(verbose_name="Содержимое")
+    preview = models.ImageField(upload_to="blog/", verbose_name="Изображение")
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
+    views = models.PositiveIntegerField(default=0, verbose_name="Просмотры")
 
     class Meta:
-        verbose_name = "Блог"
-        verbose_name_plural = "Блоги"
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
+
+    def __str__(self):
+        return f"{self.title}"
