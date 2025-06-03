@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import BlogModel
+
+from blog.models import Article
 
 
-@admin.register(BlogModel)
-class AdminBlogModel(admin.ModelAdmin):
-    list_display = ("id", "title",)
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'content', 'is_published',)
+    search_fields = ('title', 'content',)

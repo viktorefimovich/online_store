@@ -5,7 +5,6 @@ from catalog.apps import CatalogConfig
 from catalog.views import ProductListView, ProductDetailView, ContactsView, ProductCreateView, ProductUpdateView, \
     ProductDeleteView
 
-from . import views
 
 app_name = CatalogConfig.name
 
