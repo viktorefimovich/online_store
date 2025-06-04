@@ -77,28 +77,17 @@
     </ul>
 </div>
 <header data-bs-theme="dark">
-    {% include "includes/inc_menu.html" %}
+    {% include "catalog/includes/inc_menu.html" %}
 </header>
 <main>
-    <section class="py-5 text-center container">
-        <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto"><h1 class="fw-light">Skystore</h1>
-                <p class="lead text-body-secondary">Добро пожаловать в наш магазин. Здесь вы можете не только приобрести
-                    различные товары, но и выставить на продажу собственные товары.</p>
-                <p>
-                    <a href="#" class="btn btn-primary my-2">**********</a> <a href="#" class="btn btn-secondary my-2">**********</a>
-                </p>
-            </div>
-        </div>
-    </section>
+
     {% block content %}
     {% endblock %}
 </main>
 <footer class="text-body-secondary py-5">
-    <div class="container"><p class="float-end mb-1"><a href="#">Back to top</a></p>
-        <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-        <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a
-                href="/docs/5.3/getting-started/introduction">getting started guide</a>.</p></div>
+    <div class="container">
+        <p class="float-end mb-1"><a href="#">Наверх</a></p>
+    </div>
 </footer>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>

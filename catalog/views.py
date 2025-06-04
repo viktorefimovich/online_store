@@ -1,27 +1,50 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.models import Product
 
 
-def products_lict(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "products_list.html", context)
+class ProductListView(ListView):
+    model = Product
 
 
-def product_detail(reqest, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(reqest, "product_detail.html", context)
+class ProductDetailView(DetailView):
+    model = Product
 
 
-def contacts(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-        return HttpResponse(
-            f"{name} Телефон: {phone}, Ваше сообщение получено<br>Сообщение: {message}"
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ("name", "description", "image", "category", "price")
+    success_url = reverse_lazy("catalog:products_list")
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ("name", "description", "image", "category", "price")
+    success_url = reverse_lazy("catalog:products_list")
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy("catalog:products_list")
+
+
+class ContactsView(View):
+
+    def get(self, request):
+        return render(request, 'catalog/contacts.html')
+
+    def post(self, request):
+        name = request.POST.get('name', '')
+        phone = request.POST.get('phone', '')
+        message = request.POST.get('message', '')
+
+        response_message = (
+            f'{name} Телефон: {phone}, Ваше сообщение получено'
+            '<br>'
+            f'Сообщение: {message}'
         )
-    return render(request, "contacts.html")
+        return HttpResponse(response_message)
