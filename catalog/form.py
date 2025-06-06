@@ -26,7 +26,7 @@ class ProductForm(ModelForm):
 
         for field_name in self.fields.keys():
 
-            if field_name == "descr":
+            if field_name == "description":
                 self.fields[field_name].widget.attrs.update({
                     "class": "form-control",
                     "rows": 3
