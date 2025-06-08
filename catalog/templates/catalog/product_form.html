@@ -5,6 +5,7 @@
         <div class="col-6">
             <form class="row" method="post" enctype="multipart/form-data">
                 <div class="card">
+                    <h5 class="card-title">Форма добавления продукта</h5>
                     <div class="card-body">
                         {% csrf_token %}
                         {{ form.as_p}}
@@ -13,7 +14,7 @@
                         {% if object %}
                         Сохранить
                         {% else %}
-                        Создать
+                        Добавить
                         {% endif %}
                     </button>
                 </div>
