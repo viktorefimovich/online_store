@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -53,11 +55,18 @@ class Product(models.Model):
     price = models.FloatField(verbose_name="Цена", help_text="Введите цену продукта")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    owner = models.ForeignKey(User, verbose_name="Владелец", help_text="Укажите владельца продукта", blank=True,
+                              null=True, on_delete=models.CASCADE)
+    checkbox = models.BooleanField(verbose_name="Признак публикации", default=False)
 
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category"]
+        permissions = [
+            ("can_unpublish_product", "Сan unpublish product"),
+            ("can_remove_product", "Сan remove product"),
+        ]
 
     def __str__(self):
         return self.name
