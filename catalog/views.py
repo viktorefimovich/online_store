@@ -14,10 +14,10 @@ from catalog.models import Product
 
 
 def my_view(request):
-    data = cache.get('my_key')
+    data = cache.get("my_key")
     if not data:
-        data = 'some expensive computation'
-        cache.set('my_key', data, 60 * 15)
+        data = "some expensive computation"
+        cache.set("my_key", data, 60 * 15)
     return HttpResponse(data)
 
 
@@ -25,14 +25,14 @@ class ProductListView(ListView):
     model = Product
 
     def get_queryset(self):
-        queryset = cache.get('my_queryset')
+        queryset = cache.get("my_queryset")
         if not queryset:
-            queryset = super().get_queryset()
-            cache.set('my_queryset', queryset, 60 * 15)
+            queryset = Product.objects.filter(checkbox=True)
+            cache.set("my_queryset", queryset, 60 * 15)
         return queryset
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductDetailView(DetailView):
     model = Product
 
@@ -73,16 +73,16 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 class ContactsView(View):
 
     def get(self, request):
-        return render(request, 'catalog/contacts.html')
+        return render(request, "catalog/contacts.html")
 
     def post(self, request):
-        name = request.POST.get('name', '')
-        phone = request.POST.get('phone', '')
-        message = request.POST.get('message', '')
+        name = request.POST.get("name", "")
+        phone = request.POST.get("phone", "")
+        message = request.POST.get("message", "")
 
         response_message = (
-            f'{name} Телефон: {phone}, Ваше сообщение получено'
-            '<br>'
-            f'Сообщение: {message}'
+            f"{name} Телефон: {phone}, Ваше сообщение получено"
+            "<br>"
+            f"Сообщение: {message}"
         )
         return HttpResponse(response_message)
