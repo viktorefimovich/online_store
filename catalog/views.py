@@ -1,19 +1,38 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.form import ProductForm, ProductModeratorForm
 from catalog.models import Product
 
 
+def my_view(request):
+    data = cache.get('my_key')
+    if not data:
+        data = 'some expensive computation'
+        cache.set('my_key', data, 60 * 15)
+    return HttpResponse(data)
+
+
 class ProductListView(ListView):
     model = Product
 
+    def get_queryset(self):
+        queryset = cache.get('my_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('my_queryset', queryset, 60 * 15)
+        return queryset
 
+
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(DetailView):
     model = Product
 
