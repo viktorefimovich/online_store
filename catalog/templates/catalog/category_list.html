@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Список категорий{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-3 mt-5"></div>
+    <div class="col-6 mt-5 text-center">
+        <h1>Список категорий</h1>
+        <div class="list-group mt-3">
+            {% for category in categories %}
+            <div class="list-group-item">
+                <a href="{% url 'catalog:category_detail' category.pk %}" class="btn w-100">{{category.name}}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-3 mt-5"></div>
+</div>
+
+
+{% endblock %}

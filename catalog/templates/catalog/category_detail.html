@@ -1,0 +1,26 @@
+
+{% extends 'catalog/base.html' %}
+
+{% block title %}Детали "{{category.name}}"{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Название категории:</h2>
+    <h4 class="lead">{{category.name}}</h4>
+    <h2>Описание категории:</h2>
+    {% if category.descr %}
+        <h4 class="mb-5 lead">{{category.descr}}</h4>
+    {% else %}
+        <h4 class="mb-5 lead">Описание отсутствуют</h4>
+    {% endif %}
+
+    <span>
+        <a href="{% url 'catalog:cat_product' category.pk %}" class="btn btn-primary">Показать продукты</a>
+        <a href="{% url 'catalog:category_list' %}" class="btn btn-secondary">Назад</a>
+    </span>
+
+
+</div>
+
+
+{% endblock %}

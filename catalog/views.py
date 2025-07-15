@@ -9,16 +9,39 @@ from django.views import View
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from catalog.cervices import ProductService, CategoryService
 from catalog.form import ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Product, Category
 
 
-def my_view(request):
-    data = cache.get("my_key")
-    if not data:
-        data = "some expensive computation"
-        cache.set("my_key", data, 60 * 15)
-    return HttpResponse(data)
+class CategoryProductsListView(ListView):
+    model = Product
+    template_name = 'catalog/cat_product_list.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return ProductService.get_category_prods(self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['add_data'] = {
+            "len_products": len(Product.objects.filter(category=self.kwargs['pk'])),
+            "categories": CategoryService().get_categories(),
+            "category_name": Category.objects.get(pk=self.kwargs['pk']).name
+               }
+
+        return context
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/category_list.html'
+    context_object_name = 'categories'
+
+
+class CategoryDetailView(DetailView):
+    model = Category
 
 
 class ProductListView(ListView):
