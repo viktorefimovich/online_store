@@ -1,19 +1,61 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from catalog.cervices import ProductService, CategoryService
 from catalog.form import ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Product, Category
+
+
+class CategoryProductsListView(ListView):
+    model = Product
+    template_name = 'catalog/cat_product_list.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return ProductService.get_category_prods(self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['add_data'] = {
+            "len_products": len(Product.objects.filter(category=self.kwargs['pk'])),
+            "categories": CategoryService().get_categories(),
+            "category_name": Category.objects.get(pk=self.kwargs['pk']).name
+               }
+
+        return context
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/category_list.html'
+    context_object_name = 'categories'
+
+
+class CategoryDetailView(DetailView):
+    model = Category
 
 
 class ProductListView(ListView):
     model = Product
 
+    def get_queryset(self):
+        queryset = cache.get("my_queryset")
+        if not queryset:
+            queryset = Product.objects.filter(checkbox=True)
+            cache.set("my_queryset", queryset, 60 * 15)
+        return queryset
 
+
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductDetailView(DetailView):
     model = Product
 
@@ -54,16 +96,16 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 class ContactsView(View):
 
     def get(self, request):
-        return render(request, 'catalog/contacts.html')
+        return render(request, "catalog/contacts.html")
 
     def post(self, request):
-        name = request.POST.get('name', '')
-        phone = request.POST.get('phone', '')
-        message = request.POST.get('message', '')
+        name = request.POST.get("name", "")
+        phone = request.POST.get("phone", "")
+        message = request.POST.get("message", "")
 
         response_message = (
-            f'{name} Телефон: {phone}, Ваше сообщение получено'
-            '<br>'
-            f'Сообщение: {message}'
+            f"{name} Телефон: {phone}, Ваше сообщение получено"
+            "<br>"
+            f"Сообщение: {message}"
         )
         return HttpResponse(response_message)
